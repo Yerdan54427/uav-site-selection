@@ -1,16 +1,81 @@
-# UAV Site Selection
+# 校园无人机起降点选址分析
 
-A small Python project for evaluating UAV takeoff and landing site candidates on a campus.
+这是一个面向初学者的 Python 小项目，用于分析校园内无人机起飞与降落候选场地的适宜性。项目通过读取 CSV 数据、计算加权总分，并生成可视化图表，帮助快速比较不同候选点的优劣。
 
-The project reads a CSV file of candidate scores, calculates a weighted total score, and generates three figures:
+## 项目背景
 
-1. A score heatmap
-2. A weighted total score bar chart
-3. A radar chart for the top 2 candidates
+在校园场景中，无人机可用于快递配送、物资运输、巡检等任务。为了保证运行安全和效率，需要从多个候选场地中选择更适合作为起降点的位置。
 
-Generated figures are saved in the `figures/` folder.
+## 项目目标
 
-## Project Structure
+本项目的目标是：
+
+- 读取候选场地评分数据
+- 根据多个评价指标计算综合得分
+- 对候选场地进行排序
+- 通过图表展示不同场地的比较结果
+
+## 评价指标
+
+项目使用以下 7 个评价指标：
+
+- `dorm_distance`：与宿舍区的距离，越合适分数越高
+- `logistics_distance`：与物流点的距离，越合适分数越高
+- `openness`：场地开阔程度，越开阔分数越高
+- `obstacle_risk`：障碍物风险，风险越低分数越高
+- `crowd_risk`：人群干扰风险，风险越低分数越高
+- `route_access`：航线可达性，越方便分数越高
+- `operation_convenience`：现场操作便利性，越方便分数越高
+
+## 评分标准
+
+每个指标使用 `1` 到 `5` 的整数评分：
+
+- `1`：很差 / 很不适合
+- `2`：较差
+- `3`：一般
+- `4`：较好
+- `5`：很好 / 很适合
+
+分数越高，表示该候选点在该指标上的表现越好。
+
+## 加权评分模型
+
+项目使用加权总分方法对候选场地进行综合评价，权重如下：
+
+- `dorm_distance`：`0.15`
+- `logistics_distance`：`0.15`
+- `openness`：`0.20`
+- `obstacle_risk`：`0.15`
+- `crowd_risk`：`0.15`
+- `route_access`：`0.10`
+- `operation_convenience`：`0.10`
+
+综合得分计算方式为：
+
+```text
+total_score = 各指标分数 × 对应权重 后求和
+```
+
+其中，`openness` 权重最高，因为场地开阔程度通常对无人机安全起降较为重要。
+
+## 可视化结果
+
+项目生成 3 张图表，保存在 `figures/` 目录中：
+
+### 1. 评分热力图
+
+热力图展示所有候选点在 7 个评价指标上的原始分数。颜色越深，表示得分越高；每个单元格中也会显示具体数值，便于直接比较。
+
+### 2. 总分柱状图
+
+柱状图展示每个候选点的加权总分，并按照总分从高到低排序。柱子上方会标出具体分值，方便查看最终排名。
+
+### 3. 前两名雷达图
+
+雷达图选择综合得分最高的 2 个候选点，对比它们在 7 个评价指标上的表现，帮助观察各自的优势和短板。
+
+## 项目结构
 
 ```text
 uav-site-selection/
@@ -27,27 +92,27 @@ uav-site-selection/
     plot_radar.py
 ```
 
-## Setup
+## 运行方式
+
+### 1. 安装依赖
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Run
+### 2. 运行主程序
 
-From the project root:
+在项目根目录下执行：
 
 ```bash
 python src/main.py
 ```
 
-After running, the generated figures will appear in `figures/`.
+程序会完成以下操作：
 
-## Input Data
+- 读取 `data/candidate_scores.csv`
+- 计算每个候选点的加权总分
+- 在终端输出排序结果
+- 生成热力图、柱状图和雷达图
 
-The CSV file should include:
-
-- One `candidate` column
-- Several scoring columns with numeric values
-
-This project includes a simple sample dataset in `data/candidate_scores.csv`.
+生成的图片将保存在 `figures/` 目录中。
