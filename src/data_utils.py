@@ -62,3 +62,9 @@ def add_total_score(df):
     result["total_score"] = sum(result[column] * weight for column, weight in WEIGHTS.items())
     result["total_score"] = result["total_score"].round(2)
     return result.sort_values(by="total_score", ascending=False).reset_index(drop=True)
+
+
+def prepare_data(csv_path=DATA_FILE):
+    """Load, validate, and score the candidate data in one step."""
+    df = load_and_validate_data(csv_path)
+    return add_total_score(df)

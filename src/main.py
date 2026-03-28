@@ -3,18 +3,15 @@ from pathlib import Path
 from plot_bar import create_bar_chart
 from plot_heatmap import create_heatmap
 from plot_radar import create_radar_chart
-from data_utils import DATA_FILE, add_total_score, load_and_validate_data
+from data_utils import DATA_FILE, prepare_data
 
 
 FIGURES_DIR = Path(__file__).resolve().parents[1] / "figures"
 
 
 def main():
-    # Read and validate the candidate score data from the CSV file.
-    df = load_and_validate_data(DATA_FILE)
-
-    # Add the weighted total score and sort from highest to lowest.
-    df = add_total_score(df)
+    # Read, validate, score, and sort the candidate data.
+    df = prepare_data(DATA_FILE)
 
     # Print the final ranking to the terminal.
     print("Campus UAV Site Selection Ranking")
