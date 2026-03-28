@@ -7,8 +7,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from data_utils import DATA_FILE, INDICATORS, add_total_score, load_and_validate_data
+from plot_config import configure_matplotlib
 
 OUTPUT_FILE = Path(__file__).resolve().parents[1] / "figures" / "radar_chart.png"
+
+configure_matplotlib()
 
 
 def create_radar_chart(df, output_file=OUTPUT_FILE):
