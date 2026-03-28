@@ -2,34 +2,13 @@ from math import pi
 from pathlib import Path
 
 import matplotlib
-import pandas as pd
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from data_utils import DATA_FILE, INDICATORS, add_total_score, load_and_validate_data
 
-DATA_FILE = Path(__file__).resolve().parents[1] / "data" / "candidate_scores.csv"
 OUTPUT_FILE = Path(__file__).resolve().parents[1] / "figures" / "radar_chart.png"
-
-WEIGHTS = {
-    "dorm_distance": 0.15,
-    "logistics_distance": 0.15,
-    "openness": 0.20,
-    "obstacle_risk": 0.15,
-    "crowd_risk": 0.15,
-    "route_access": 0.10,
-    "operation_convenience": 0.10,
-}
-
-INDICATORS = [
-    "dorm_distance",
-    "logistics_distance",
-    "openness",
-    "obstacle_risk",
-    "crowd_risk",
-    "route_access",
-    "operation_convenience",
-]
 
 
 def create_radar_chart(df, output_file=OUTPUT_FILE):
@@ -66,11 +45,9 @@ def create_radar_chart(df, output_file=OUTPUT_FILE):
 
 
 def main():
-    # Read the candidate data from the CSV file.
-    df = pd.read_csv(DATA_FILE)
-
-    # Compute the weighted total score for each candidate.
-    df["total_score"] = sum(df[column] * weight for column, weight in WEIGHTS.items())
+    # Read the candidate data from the CSV file and validate it.
+    df = load_and_validate_data(DATA_FILE)
+    df = add_total_score(df)
     create_radar_chart(df)
 
 

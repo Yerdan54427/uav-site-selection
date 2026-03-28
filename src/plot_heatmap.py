@@ -1,13 +1,13 @@
 from pathlib import Path
 
 import matplotlib
-import pandas as pd
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from data_utils import DATA_FILE, load_and_validate_data
 
-DATA_FILE = Path(__file__).resolve().parents[1] / "data" / "candidate_scores.csv"
+
 OUTPUT_FILE = Path(__file__).resolve().parents[1] / "figures" / "heatmap.png"
 
 
@@ -46,8 +46,8 @@ def create_heatmap(df, output_file=OUTPUT_FILE):
 
 
 def main():
-    # Read the CSV file and generate the heatmap.
-    df = pd.read_csv(DATA_FILE)
+    # Read the CSV file, validate it, and generate the heatmap.
+    df = load_and_validate_data(DATA_FILE)
     create_heatmap(df)
 
 
