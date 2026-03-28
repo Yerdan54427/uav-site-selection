@@ -11,15 +11,16 @@ from plot_config import COLOR_PALETTE, TITLE_PREFIX, configure_matplotlib
 
 OUTPUT_FILE = Path(__file__).resolve().parents[1] / "figures" / "bar_chart.png"
 
+# 在创建图形之前，先应用统一的字体和颜色设置。
 configure_matplotlib()
 
 
 def create_bar_chart(df, output_file=OUTPUT_FILE):
-    """Create and save a bar chart from candidate total scores."""
-    # Sort candidates from highest score to lowest score.
+    """根据候选点总分生成柱状图并保存到文件。"""
+    # 这里再次排序，是为了保证这个函数在单独调用时也能稳定输出降序结果。
     df = df.sort_values(by="total_score", ascending=False).reset_index(drop=True)
 
-    # Create the bar chart.
+    # 使用统一配色创建柱状图。
     fig, ax = plt.subplots(figsize=(8.6, 5.2))
     bars = ax.bar(
         df["candidate"],
@@ -29,6 +30,7 @@ def create_bar_chart(df, output_file=OUTPUT_FILE):
         linewidth=1.2,
     )
 
+    # 给柱子顶部预留一点空间，避免分数文字贴得太近。
     ax.set_title(f"{TITLE_PREFIX}综合评分柱状图", pad=14, fontsize=14, fontweight="bold")
     ax.set_xlabel("候选点")
     ax.set_ylabel("加权总分")
@@ -48,6 +50,7 @@ def create_bar_chart(df, output_file=OUTPUT_FILE):
             color=COLOR_PALETTE["text"],
         )
 
+    # 去掉不必要的边框线，让注意力集中在柱子和数值上。
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
 
