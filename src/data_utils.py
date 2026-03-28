@@ -6,7 +6,7 @@ import pandas as pd
 DATA_FILE = Path(__file__).resolve().parents[1] / "data" / "candidate_scores.csv"
 
 INDICATORS = [
-    "dorm_distance",
+    "service_distance",
     "logistics_distance",
     "openness",
     "obstacle_risk",
@@ -16,7 +16,7 @@ INDICATORS = [
 ]
 
 WEIGHTS = {
-    "dorm_distance": 0.15,
+    "service_distance": 0.15,
     "logistics_distance": 0.15,
     "openness": 0.20,
     "obstacle_risk": 0.15,

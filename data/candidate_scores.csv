@@ -1,4 +1,4 @@
-candidate,dorm_distance,logistics_distance,openness,obstacle_risk,crowd_risk,route_access,operation_convenience
+candidate,service_distance,logistics_distance,openness,obstacle_risk,crowd_risk,route_access,operation_convenience
 A,4,5,5,4,3,5,4
 B,3,4,4,3,2,4,5
 C,5,3,3,2,4,3,3

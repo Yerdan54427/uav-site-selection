@@ -4,7 +4,7 @@
 
 ## 项目背景
 
-在校园场景中，无人机可用于快递配送、物资运输、巡检等任务。为了保证运行安全和效率，需要从多个候选场地中选择更适合作为起降点的位置。
+在校园场景中，无人机不仅可以服务宿舍区，也可以服务教学区、综合服务区和物流相关区域。为了保证运行安全和服务效率，需要从多个候选场地中选择更适合作为起降点的位置。
 
 ## 项目目标
 
@@ -19,7 +19,7 @@
 
 项目使用以下 7 个评价指标：
 
-- `dorm_distance`：与宿舍区的距离，越合适分数越高
+- `service_distance`：与服务区的距离，越合适分数越高
 - `logistics_distance`：与物流点的距离，越合适分数越高
 - `openness`：场地开阔程度，越开阔分数越高
 - `obstacle_risk`：障碍物风险，风险越低分数越高
@@ -43,7 +43,7 @@
 
 项目使用加权总分方法对候选场地进行综合评价，权重如下：
 
-- `dorm_distance`：`0.15`
+- `service_distance`：`0.15`
 - `logistics_distance`：`0.15`
 - `openness`：`0.20`
 - `obstacle_risk`：`0.15`
@@ -84,9 +84,15 @@ uav-site-selection/
   .gitignore
   data/
     candidate_scores.csv
+  docs/
+    scoring_rules.md
+    methodology.md
+    results.md
   figures/
   src/
     main.py
+    data_utils.py
+    plot_config.py
     plot_heatmap.py
     plot_bar.py
     plot_radar.py
