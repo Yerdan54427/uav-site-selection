@@ -14,8 +14,11 @@ def main():
     df = prepare_data(DATA_FILE)
 
     # Print the final ranking to the terminal.
+    ranking_display = df[["candidate", "total_score"]].copy()
+    ranking_display["total_score"] = ranking_display["total_score"].map(lambda score: f"{score:.2f}")
+
     print("Campus UAV Site Selection Ranking")
-    print(df[["candidate", "total_score"]].to_string(index=False))
+    print(ranking_display.to_string(index=False))
 
     # Generate all figures in the figures folder.
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
