@@ -40,12 +40,12 @@ def load_and_validate_data(csv_path=DATA_FILE):
 
     # candidate 列是必须的，因为终端排名和所有图表都要用它来显示候选点名称。
     if "candidate" not in df.columns:
-        raise ValueError("CSV file is missing the required 'candidate' column.")
+        raise ValueError("CSV 文件缺少必需的 candidate 列。")
 
     # 检查是否缺少任何一个必需的评分指标列。
     missing_columns = [column for column in INDICATORS if column not in df.columns]
     if missing_columns:
-        raise ValueError(f"CSV file is missing required columns: {', '.join(missing_columns)}")
+        raise ValueError(f"CSV 文件缺少必需的评分列：{', '.join(missing_columns)}")
 
     for column in INDICATORS:
         # 把每个评分列都转换成数值。
@@ -58,7 +58,7 @@ def load_and_validate_data(csv_path=DATA_FILE):
         invalid_rows = df[df[column].isna()]["candidate"].tolist()
         if invalid_rows:
             raise ValueError(
-                f"Column '{column}' contains non-numeric values for: {', '.join(invalid_rows)}"
+                f"评分列 '{column}' 存在非数字数据，对应候选点为：{', '.join(invalid_rows)}"
             )
 
         # 本项目严格使用 1 到 5 的评分体系。
@@ -66,7 +66,7 @@ def load_and_validate_data(csv_path=DATA_FILE):
         out_of_range_rows = df[(df[column] < 1) | (df[column] > 5)]["candidate"].tolist()
         if out_of_range_rows:
             raise ValueError(
-                f"Column '{column}' must contain scores from 1 to 5. Invalid candidates: "
+                f"评分列 '{column}' 的分值必须在 1 到 5 之间，异常候选点为："
                 f"{', '.join(out_of_range_rows)}"
             )
 

@@ -24,7 +24,7 @@ def create_radar_chart(df, output_file=OUTPUT_FILE):
     """根据前两名候选点生成雷达图并保存到文件。"""
     # 雷达图用于比较，因此至少要有两个候选点才有意义。
     if len(df) < 2:
-        raise ValueError("Radar chart requires at least 2 candidate sites.")
+        raise ValueError("雷达图至少需要 2 个候选点才能进行比较。")
 
     # 只取总分最高的前两名进行对比。
     top_two = df.sort_values(by="total_score", ascending=False).head(2)
