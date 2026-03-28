@@ -32,13 +32,8 @@ INDICATORS = [
 ]
 
 
-def main():
-    # Read the candidate data from the CSV file.
-    df = pd.read_csv(DATA_FILE)
-
-    # Compute the weighted total score for each candidate.
-    df["total_score"] = sum(df[column] * weight for column, weight in WEIGHTS.items())
-
+def create_radar_chart(df, output_file=OUTPUT_FILE):
+    """Create and save a radar chart for the top 2 candidates."""
     # Sort by total score and keep the top 2 candidates.
     top_two = df.sort_values(by="total_score", ascending=False).head(2)
 
@@ -62,12 +57,21 @@ def main():
     ax.set_ylim(0, 5)
     ax.legend(loc="upper right", bbox_to_anchor=(1.25, 1.1))
 
-    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    output_file.parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
-    fig.savefig(OUTPUT_FILE, dpi=300, bbox_inches="tight")
+    fig.savefig(output_file, dpi=300, bbox_inches="tight")
     plt.close(fig)
 
-    print(f"Radar chart saved to: {OUTPUT_FILE}")
+    print(f"Radar chart saved to: {output_file}")
+
+
+def main():
+    # Read the candidate data from the CSV file.
+    df = pd.read_csv(DATA_FILE)
+
+    # Compute the weighted total score for each candidate.
+    df["total_score"] = sum(df[column] * weight for column, weight in WEIGHTS.items())
+    create_radar_chart(df)
 
 
 if __name__ == "__main__":

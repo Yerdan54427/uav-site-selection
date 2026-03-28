@@ -21,13 +21,8 @@ WEIGHTS = {
 }
 
 
-def main():
-    # Read the candidate data from the CSV file.
-    df = pd.read_csv(DATA_FILE)
-
-    # Compute the weighted total score for each candidate.
-    df["total_score"] = sum(df[column] * weight for column, weight in WEIGHTS.items())
-
+def create_bar_chart(df, output_file=OUTPUT_FILE):
+    """Create and save a bar chart from candidate total scores."""
     # Sort candidates from highest score to lowest score.
     df = df.sort_values(by="total_score", ascending=False).reset_index(drop=True)
 
@@ -49,12 +44,21 @@ def main():
             va="bottom",
         )
 
-    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    output_file.parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
-    fig.savefig(OUTPUT_FILE, dpi=300, bbox_inches="tight")
+    fig.savefig(output_file, dpi=300, bbox_inches="tight")
     plt.close(fig)
 
-    print(f"Bar chart saved to: {OUTPUT_FILE}")
+    print(f"Bar chart saved to: {output_file}")
+
+
+def main():
+    # Read the candidate data from the CSV file.
+    df = pd.read_csv(DATA_FILE)
+
+    # Compute the weighted total score for each candidate.
+    df["total_score"] = sum(df[column] * weight for column, weight in WEIGHTS.items())
+    create_bar_chart(df)
 
 
 if __name__ == "__main__":

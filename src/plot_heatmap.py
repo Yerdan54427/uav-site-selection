@@ -11,10 +11,8 @@ DATA_FILE = Path(__file__).resolve().parents[1] / "data" / "candidate_scores.csv
 OUTPUT_FILE = Path(__file__).resolve().parents[1] / "figures" / "heatmap.png"
 
 
-def main():
-    # Read the CSV file.
-    df = pd.read_csv(DATA_FILE)
-
+def create_heatmap(df, output_file=OUTPUT_FILE):
+    """Create and save a heatmap from the score columns."""
     # Keep only the score columns and use candidate names as row labels.
     score_columns = [column for column in df.columns if column not in ["candidate", "total_score"]]
     heatmap_data = df.set_index("candidate")[score_columns]
@@ -39,12 +37,18 @@ def main():
     # Add a colorbar to explain the colors.
     fig.colorbar(image, ax=ax, label="Score")
 
-    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    output_file.parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
-    fig.savefig(OUTPUT_FILE, dpi=300, bbox_inches="tight")
+    fig.savefig(output_file, dpi=300, bbox_inches="tight")
     plt.close(fig)
 
-    print(f"Heatmap saved to: {OUTPUT_FILE}")
+    print(f"Heatmap saved to: {output_file}")
+
+
+def main():
+    # Read the CSV file and generate the heatmap.
+    df = pd.read_csv(DATA_FILE)
+    create_heatmap(df)
 
 
 if __name__ == "__main__":
